@@ -5,15 +5,25 @@ import { mic, micOff, scan, removeCircleOutline, addCircleOutline, exitOutline }
 import { IonIcon } from '@ionic/react';
 import { useEffect, useState } from "react";
 
+interface FullscreenDocument extends Document {
+  webkitFullscreenElement?: Element;
+  mozFullScreenElement?: Element;
+  msFullscreenElement?: Element;
+  webkitExitFullscreen?: () => Promise<void>;
+  mozCancelFullScreen?: () => Promise<void>;
+  msExitFullscreen?: () => Promise<void>;
+}
+
 export default function Home() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   useEffect(() => {
     const handleFullscreenChange = () => {
+      const doc = document as FullscreenDocument;
       setIsFullscreen(
-        document.fullscreenElement ||
-        document.webkitFullscreenElement ||
-        document.mozFullScreenElement ||
-        document.msFullscreenElement
+        !!doc.fullscreenElement ||
+        !!doc.webkitFullscreenElement ||
+        !!doc.mozFullScreenElement ||
+        !!doc.msFullscreenElement
       );
     };
 
