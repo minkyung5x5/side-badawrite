@@ -5,6 +5,12 @@ import { mic, micOff, scan, removeCircleOutline, addCircleOutline, exitOutline }
 import { IonIcon } from '@ionic/react';
 import { useEffect, useState } from "react";
 
+interface FullscreenElement extends HTMLElement {
+  webkitRequestFullscreen?: () => Promise<void>;
+  mozRequestFullScreen?: () => Promise<void>;
+  msRequestFullscreen?: () => Promise<void>;
+}
+
 interface FullscreenDocument extends Document {
   webkitFullscreenElement?: Element;
   mozFullScreenElement?: Element;
@@ -50,7 +56,7 @@ export default function Home() {
   };
 
   const enterFullscreen = () => {
-    const element = document.documentElement;
+    const element = document.documentElement as FullscreenElement;
     if (element.requestFullscreen) {
       element.requestFullscreen();
     } else if (element.webkitRequestFullscreen) { // Safari
@@ -63,14 +69,15 @@ export default function Home() {
   };
 
   const exitFullscreen = () => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) { // Safari
-      document.webkitExitFullscreen();
-    } else if (document.mozCancelFullScreen) { // Firefox
-      document.mozCancelFullScreen();
-    } else if (document.msExitFullscreen) { // IE/Edge
-      document.msExitFullscreen();
+    const doc = document as FullscreenDocument;
+    if (doc.exitFullscreen) {
+      doc.exitFullscreen();
+    } else if (doc.webkitExitFullscreen) { // Safari
+      doc.webkitExitFullscreen();
+    } else if (doc.mozCancelFullScreen) { // Firefox
+      doc.mozCancelFullScreen();
+    } else if (doc.msExitFullscreen) { // IE/Edge
+      doc.msExitFullscreen();
     }
   };
 
