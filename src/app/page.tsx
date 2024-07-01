@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { mic, micOff, scan, removeCircleOutline, addCircleOutline, exitOutline } from 'ionicons/icons';
-import { IonButton, IonIcon } from '@ionic/react';
+import { IonIcon } from '@ionic/react';
 import { useEffect, useState } from "react";
 
 export default function Home() {
