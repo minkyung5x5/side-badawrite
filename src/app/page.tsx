@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import { mic, micOff, scan, removeCircleOutline, addCircleOutline, exitOutline } from 'ionicons/icons';
+import { mic, micOff, scan, removeCircleOutline, addCircleOutline, exitOutline, refreshOutline, clipboardOutline } from 'ionicons/icons';
 import { IonIcon } from '@ionic/react';
 import { useEffect, useState } from "react";
 import { enterFullscreen, exitFullscreen, isFullscreenEnabled } from './components/fullscreen';
@@ -46,7 +46,7 @@ export default function Home() {
     setFontSize(prevSize => prevSize + 1);
   };
 
-  const { transcript, listening, listen, stop } = useSpeechToText();
+  const { transcript, resetTranscript, copyTranscript, listening, listen, stop } = useSpeechToText();
 
   return (
     <main>
@@ -64,11 +64,23 @@ export default function Home() {
             {listening &&
               <IonIcon onClick={stop} className="w-10 h-10 p-2 rounded-full outline outline-2 hover:cursor-pointer text-white" icon={micOff} />
             }
-            <IonIcon
-              onClick={handleFullscreen}
-              className="w-10 h-10 hover:cursor-pointer text-white"
-              icon={isFullscreen ? exitOutline : scan}
-            />
+            <div className="flex justify-between items-center space-x-2">
+              <IonIcon
+                onClick={resetTranscript}
+                className="w-10 h-10 hover:cursor-pointer text-white"
+                icon={refreshOutline}
+              />
+              <IonIcon
+                onClick={copyTranscript}
+                className="w-10 h-10 hover:cursor-pointer text-white"
+                icon={clipboardOutline}
+              />
+              <IonIcon
+                onClick={handleFullscreen}
+                className="w-10 h-10 hover:cursor-pointer text-white"
+                icon={isFullscreen ? exitOutline : scan}
+              />
+            </div>
           </div>
         </div>
         <div className="p-4 h-40" style={{ fontSize: `${fontSize}px` }}>{transcript}</div>
