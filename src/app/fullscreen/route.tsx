@@ -1,5 +1,3 @@
-// fullscreen.ts
-
 export interface FullscreenElement extends HTMLElement {
     webkitRequestFullscreen?: () => Promise<void>;
     mozRequestFullScreen?: () => Promise<void>;
