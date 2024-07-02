@@ -4,8 +4,8 @@ import Image from "next/image";
 import { mic, micOff, scan, removeCircleOutline, addCircleOutline, exitOutline } from 'ionicons/icons';
 import { IonIcon } from '@ionic/react';
 import { useEffect, useState } from "react";
-import { enterFullscreen, exitFullscreen, isFullscreenEnabled } from './fullscreen/route';
-import useSpeechToText from "./speech/useSpeechToText";
+import { enterFullscreen, exitFullscreen, isFullscreenEnabled } from './components/fullscreen';
+import useSpeechToText from "./components/useSpeechToText";
 
 export default function Home() {
   const [isFullscreen, setIsFullscreen] = useState(false);
