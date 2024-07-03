@@ -3,31 +3,15 @@
 import Image from "next/image";
 import { mic, micOff, scan, removeCircleOutline, addCircleOutline, exitOutline, refreshOutline, clipboardOutline } from 'ionicons/icons';
 import { IonIcon } from '@ionic/react';
-import { useEffect, useRef, useState } from "react";
-import useSpeechToText from "./components/useSpeechToText";
-import useFullscreen from "./components/useFullscreen";
+import useSpeechToText from "./hooks/useSpeechToText";
+import useFontSize from "./hooks/useFontSize";
+import useFullscreen from "./hooks/useFullscreen";
 
 export default function Home() {
-  const [fontSize, setFontSize] = useState(40);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const { transcript, resetTranscript, copyTranscript, listening, startListening, stop } = useSpeechToText();
+  const { listening, transcript, scrollRef, resetTranscript, copyTranscript, startListening, stopListening } = useSpeechToText();
+  const { fontSize, decreaseFontSize, increaseFontSize } = useFontSize();
   const { isFullscreen, handleFullscreen } = useFullscreen();
   
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [transcript]);
-
-  const decreaseFontSize = () => {
-    setFontSize(prevSize => prevSize - 1);
-  };
-
-  const increaseFontSize = () => {
-    setFontSize(prevSize => prevSize + 1);
-  };
-
-
   return (
     <main>
       <div className="flex flex-col h-screen bg-emerald-100">
@@ -44,7 +28,7 @@ export default function Home() {
               <IonIcon onClick={startListening} className="w-10 h-10 p-2 rounded-full outline outline-2 hover:cursor-pointer text-white" icon={mic} />
             }
             {listening &&
-              <IonIcon onClick={stop} className="w-10 h-10 p-2 rounded-full outline outline-2 hover:cursor-pointer text-white" icon={micOff} />
+              <IonIcon onClick={stopListening} className="w-10 h-10 p-2 rounded-full outline outline-2 hover:cursor-pointer text-white" icon={micOff} />
             }
             <div className="flex justify-between items-center space-x-2">
               <IonIcon

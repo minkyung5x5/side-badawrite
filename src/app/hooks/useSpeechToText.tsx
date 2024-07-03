@@ -1,9 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSpeechRecognition } from 'react-speech-kit';
 
-const useSpeechToText = () => {
+const useSpeechToText = () => {  
+    const scrollRef = useRef<HTMLDivElement>(null);
     const [transcript, setTranscript] = useState('');
 
+    useEffect(() => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+      }, [transcript]);
+
+      
     const { listen, listening, stop } = useSpeechRecognition({
         onResult: (result: string) => {
             setTranscript(prevTranscript => prevTranscript + ' ' + result);
@@ -12,6 +20,10 @@ const useSpeechToText = () => {
 
     const startListening = () => {
         listen({ interimResults: false, lang: 'ko-KR' });
+    }
+
+    const stopListening = () => {
+        stop();
     }
 
     const resetTranscript = () => {
@@ -29,7 +41,7 @@ const useSpeechToText = () => {
             });
     }
 
-    return { transcript, resetTranscript, copyTranscript, listening, startListening, stop };
+    return { listening, transcript, scrollRef, resetTranscript, copyTranscript, startListening, stopListening };
 };
 
 export default useSpeechToText;
