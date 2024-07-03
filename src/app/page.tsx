@@ -3,40 +3,21 @@
 import Image from "next/image";
 import { mic, micOff, scan, removeCircleOutline, addCircleOutline, exitOutline, refreshOutline, clipboardOutline } from 'ionicons/icons';
 import { IonIcon } from '@ionic/react';
-import { useEffect, useState } from "react";
-import { enterFullscreen, exitFullscreen, isFullscreenEnabled } from './components/fullscreen';
+import { useEffect, useRef, useState } from "react";
 import useSpeechToText from "./components/useSpeechToText";
+import useFullscreen from "./components/useFullscreen";
 
 export default function Home() {
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [fontSize, setFontSize] = useState(40);
-
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const { transcript, resetTranscript, copyTranscript, listening, startListening, stop } = useSpeechToText();
+  const { isFullscreen, handleFullscreen } = useFullscreen();
+  
   useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(isFullscreenEnabled());
-    };
-
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
-
-    return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
-      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
-      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
-    };
-  }, []);
-
-  const handleFullscreen = () => {
-    if (isFullscreen) {
-      exitFullscreen();
-    } else {
-      enterFullscreen();
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-    setIsFullscreen(!isFullscreen);
-  };
+  }, [transcript]);
 
   const decreaseFontSize = () => {
     setFontSize(prevSize => prevSize - 1);
@@ -46,12 +27,13 @@ export default function Home() {
     setFontSize(prevSize => prevSize + 1);
   };
 
-  const { transcript, resetTranscript, copyTranscript, listening, startListening, stop } = useSpeechToText();
 
   return (
     <main>
-      <div className="relative h-screen bg-emerald-100">
-        <div className="fixed bottom-0 left-0 w-full h-20 bg-emerald-500 opacity-50">
+      <div className="flex flex-col h-screen bg-emerald-100">
+        <div className="fixed top-1 right-1 text-emerald-600">{'Badawrite'}</div>
+        <div className="h-full overflow-y-auto p-4" ref={scrollRef} style={{ fontSize: `${fontSize}px` }}>{transcript}</div>
+        <div className="h-20 w-full bg-emerald-500 opacity-50">
           <div className="w-full h-20 p-4 flex justify-between items-center bg-emerald-600">
             <div className="flex justify-between items-center space-x-2">
               <IonIcon onClick={decreaseFontSize} className="w-10 h-10 text-white hover:cursor-pointer" icon={removeCircleOutline} />
@@ -83,8 +65,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="p-4 h-40" style={{ fontSize: `${fontSize}px` }}>{transcript}</div>
-        <div className="fixed top-2 right-2 text-emerald-600">{'Badawrite'}</div>
       </div>
     </main>
   );
