@@ -46,7 +46,7 @@ export default function Home() {
     setFontSize(prevSize => prevSize + 1);
   };
 
-  const { transcript, resetTranscript, copyTranscript, listening, listen, stop } = useSpeechToText();
+  const { transcript, resetTranscript, copyTranscript, listening, startListening, stop } = useSpeechToText();
 
   return (
     <main>
@@ -59,7 +59,7 @@ export default function Home() {
               <IonIcon onClick={increaseFontSize} className="w-10 h-10 text-white hover:cursor-pointer" icon={addCircleOutline} />
             </div>
             {!listening &&
-              <IonIcon onClick={listen} className="w-10 h-10 p-2 rounded-full outline outline-2 hover:cursor-pointer text-white" icon={mic} />
+              <IonIcon onClick={startListening} className="w-10 h-10 p-2 rounded-full outline outline-2 hover:cursor-pointer text-white" icon={mic} />
             }
             {listening &&
               <IonIcon onClick={stop} className="w-10 h-10 p-2 rounded-full outline outline-2 hover:cursor-pointer text-white" icon={micOff} />

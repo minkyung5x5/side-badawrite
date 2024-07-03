@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSpeechRecognition } from 'react-speech-kit';
 
 const useSpeechToText = () => {
@@ -6,9 +6,13 @@ const useSpeechToText = () => {
 
     const { listen, listening, stop } = useSpeechRecognition({
         onResult: (result: string) => {
-            setTranscript(result);
+            setTranscript(prevTranscript => prevTranscript + ' ' + result);
         },
     });
+
+    const startListening = () => {
+        listen({ interimResults: false, lang: 'ko-KR' });
+    }
 
     const resetTranscript = () => {
         setTranscript('');
@@ -25,7 +29,7 @@ const useSpeechToText = () => {
             });
     }
 
-    return { transcript, resetTranscript, copyTranscript, listening, listen, stop };
+    return { transcript, resetTranscript, copyTranscript, listening, startListening, stop };
 };
 
 export default useSpeechToText;
