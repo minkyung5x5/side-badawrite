@@ -1,5 +1,9 @@
 # BadaWrite - 실시간 스크립트 지원 서비스
 
+## 배포 주소 - https://badawrite.vercel.app/
+<img width="1440" alt="image" src="https://github.com/minkyung5x5/side-badawrite/assets/122676660/853cfa31-02da-4923-96b4-4f19d98a846b">
+
+## 프로젝트 소개
 ### 목적
 영세한 단체(소규모 극단, 독립 강연자, 비영리 조직 등)의 공연/강연 진행시 실시간 스크립트 제공
 
